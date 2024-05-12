@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
+  
   // Define the environment mode
   mode: 'development', // Use 'production' for production environment
   

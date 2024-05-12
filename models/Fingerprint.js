@@ -5,15 +5,7 @@ const fingerprintSchema = new mongoose.Schema({
   screenResolution: String,
   timezone: String,
   fonts: String,
-  canvasFingerprint: {
-    winding: Boolean,
-    geometry: String,
-    text: String
-  },
-  webglFingerprint: String,
   visitorId: String
 });
 
 module.exports = mongoose.model('Fingerprint', fingerprintSchema);
-
-

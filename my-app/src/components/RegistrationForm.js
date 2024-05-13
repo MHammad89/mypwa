@@ -43,7 +43,11 @@ function RegistrationForm() {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Form.Group controlId="formConfirmPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Confirm Password" value={password} onChange={e => setPassword(e.target.value)} />
+            </Form.Group>
+            <Button style={{ display: 'block', margin: '20px auto', backgroundColor: '#343a40', color: 'white', border: 'none' }} type="submit">
                 Register
             </Button>
         </Form>

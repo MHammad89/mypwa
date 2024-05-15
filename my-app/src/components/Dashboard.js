@@ -1,29 +1,30 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import api from '../utilities/api';
+import { getFingerprint } from '../utilities/fingerprint'; 
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
   useEffect(() => {
-    //const token = localStorage.getItem('token');
-    const expiry = localStorage.getItem('token_expiry'); // Assuming expiry time is stored in localStorage
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const fingerprintData = await getFingerprint();
 
-    const checkExpiry = () => {
-      const currentTime = new Date().getTime();
-      if (currentTime >= expiry) {
-        alert('Your session has expired. Please log in again.');
-        localStorage.removeItem('token');
-        localStorage.removeItem('token_expiry');
-        navigate('/login');
+        const response = await api.get('/protected', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'fingerprint': JSON.stringify(fingerprintData),
+          },
+        });
+        console.log('Protected data:', response.data);
+      } catch (error) {
+        console.error('Error fetching protected data', error);
       }
     };
 
-    const timer = setInterval(checkExpiry, 60000); // Check every 5 seconds
+    fetchData();
+  }, []);
 
-    return () => clearInterval(timer); // Cleanup on component unmount
-  }, [navigate]);
-
-  return <div>Welcome to Your Dashboard!</div>;
+  return <div>Welcome to the Dashboard!</div>;
 };
 
 export default Dashboard;

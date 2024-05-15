@@ -1,29 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './components/NavBar';
-import Dashboard from './components/Dashboard';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import LoginForm from './components/LoginForm';
+import Dashboard from './components/Dashboard';
 import RegistrationForm from './components/RegistrationForm';
-import PrivateRoute from './components/PrivateRoute';
+import NavBar from './components/NavBar';
 
-
-function App() {
-  return (
-    <Router>
-      <NavBar />
-      <Routes>
-      <Route path="/" element={
-  <div style={{ textAlign: 'center', marginTop: '50px' }}>
-    <img src="/blogimage.png" alt="Your App Logo" style={{ maxWidth: '200px' }} />
-    <h1>Progressive Web App</h1>
-  </div>
-} />
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/dashboard" element={<PrivateRoute element={Dashboard} />} />
-      </Routes>
-    </Router>
-  );
-}
+const App = () => {
+    return (
+        <AuthProvider>
+            <Router>
+                <NavBar />
+                <Routes>
+                    <Route path="/" element={<div>Home Page</div>} />
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/register" element={<RegistrationForm />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
+    );
+};
 
 export default App;

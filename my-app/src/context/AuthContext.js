@@ -1,27 +1,48 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import api from '../utilities/api';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    const [authState, setAuthState] = useState({ token: null, refreshToken: null });
+const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
 
-    const login = (accessToken, refreshToken) => {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        setAuthState({ token: accessToken });
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            
+        }
+    }, []);
+
+    const login = async (username, password, fingerprint) => {
+        try {
+            const response = await api.post('/api/auth/login', { username, password, fingerprint });
+            const { accessToken, refreshToken } = response.data;
+
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+            
+
+            return true;
+        } catch (error) {
+            console.error('Login error', error);
+            return false;
+        }
     };
 
     const logout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        setAuthState({ token: null });
+        setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ authState, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export { AuthContext, AuthProvider };

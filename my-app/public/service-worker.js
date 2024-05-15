@@ -4,11 +4,11 @@ const assetsToCache = [
     '/index.html',
     '/styles/main.css',
     '/scripts/app.js',
-    '/images/logo192.png', // Ensure this path is correct
+    '/images/logo192.png', 
     '/offline.html'
 ];
 /* eslint-disable no-restricted-globals */
-// Install event: Cache necessary files
+
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -20,7 +20,7 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate event: Clean up old caches
+
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(cacheNames => {
@@ -36,15 +36,15 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch event: Serve cached content if offline or fetch from network
+
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
             if (cachedResponse) {
-                return cachedResponse; // return the cached response if found
+                return cachedResponse;
             }
 
-            // Attempt to fetch from the network or provide a fallback if offline
+            
             return fetch(event.request).catch(() => {
                 if (event.request.mode === 'navigate') {
                     return caches.match('/offline.html');

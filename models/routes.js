@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Fingerprint = require('./Fingerprint'); // Ensure correct path
+const Fingerprint = require('./Fingerprint'); 
 
 router.post('/', async (req, res) => {
     console.log('Received data:', req.body);

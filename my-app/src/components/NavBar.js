@@ -1,4 +1,4 @@
-// NavBar.js
+
 import React from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
@@ -7,8 +7,8 @@ function NavBar() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Clear the JWT from local storage
-        navigate('/login'); // Redirect to the login page
+        localStorage.removeItem('token'); 
+        navigate('/login');
     };
 
     return (
